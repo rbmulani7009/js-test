@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+        <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+        <script src="//storage.googleapis.com/code.getmdl.io/1.0.5/material.min.js"></script>
+        <link rel="stylesheet"
+              href="https://storage.googleapis.com/code.getmdl.io/1.0.5/material.deep_orange-amber.min.css"/>
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="mdl-jquery-modal-dialog.css">
+        <script src="mdl-jquery-modal-dialog.js"></script>
+        <style>
+            body {
+                padding: 16px;
+            }
+            button {
+                margin-right: 8px;
+            }
+            div img{
+                max-width:100%;
+                max-height:100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="button-id" class="content-grid mdl-grid">
+
+        </div>
+        <script>
+            $.ajax({
+                url: 'test.php',
+                method: 'GET',
+                success: function (response) {
+                    var data = jQuery.parseJSON(response);
+                    $.each(data, function (key, val) {
+
+                        var color = (typeof val.color === "undefined") ? "No Title" : val.color;
+                        var message = (typeof val.message === "undefined") ? "No messege" : val.message.replace(/<.*?script.*?>.*?<\/.*?script.*?>/igm, '');
+;
+                        var value = (typeof val.value === "undefined") ? "" : val.value;
+
+                        var button = '<button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored show-info" '
+                                + 'data-msg="' + message + '" style="background-color: ' + value + '">'
+                                + '' + color + '</button>';
+
+                        $("#button-id").append(button);
+                    });
+                }
+            });
+            $(document).on('click', '.show-info', function () {
+                var msg = $(this).data('msg');
+                var title = $(this).text();
+                showDialog({
+                    title: title.toUpperCase(),
+                    text: msg
+                });
+            });
+        </script>
+    </body>
+</html>
